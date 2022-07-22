@@ -1,0 +1,8 @@
+# No need to check initrd 
+/dev/root                                       /              auto  rw              0  0
+
+# Use sync for autoboot to reduce the risk of autoboot.txt not being updated correctly.
+# Disallow excecutables on these partitions.
+PARTUUID=d0d0cafe-01                            /boot/auto  vfat   sync,rw,noexec,nosuid  0  2
+PARTUUID=d0d0cafe-02                            /boot/boota vfat  async,rw,noexec,nosuid  0  2
+PARTUUID=d0d0cafe-03                            /boot/bootb vfat  async,rw,noexec,nosuid  0  2
