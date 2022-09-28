@@ -1,0 +1,106 @@
+config BR2_PACKAGE_RPI_SYSTEM_UPDATE
+	bool "rpi-system-update"
+	select BR2_PACKAGE_RASPBERRYPI_SECURE_BOOT
+	select BR2_PACKAGE_LIBCURL
+	select BR2_PACKAGE_LIBCURL_CURL
+
+	help
+	   Tools for updating the system software in boot.img / tryboot.img
+
+config BR2_PACKAGE_RPI_SYSTEM_UPDATE_VERSION
+	int "Version number"
+	default 0
+	depends on BR2_PACKAGE_RPI_SYSTEM_UPDATE
+
+	help
+	   This version number is stored within the boot.img system software and
+	   is compared against the number reported by the upgrade server. If
+	   the upgrade version is higher then the new image is downloaded and
+	   boot.img is upgraded.
+
+config BR2_PACKAGE_RPI_SYSTEM_UPDATE_PUBLIC_KEY
+	string "Public key"
+	default ""
+	depends on BR2_PACKAGE_RPI_SYSTEM_UPDATE
+
+	help
+	    The filenmame of the RSA public key in PEM format to include in the
+	    image so that rpi-system-update can verify the signature of the
+	    downloaded boot.img file against boot.sig.
+
+config BR2_PACKAGE_RPI_SYSTEM_UPDATE_URL
+	string "URL for system update version information"
+	default ""
+	depends on BR2_PACKAGE_RPI_SYSTEM_UPDATE
+
+	help
+      The URL of the version file that the OS should check for new updates.
+
+config BR2_PACKAGE_RPI_SYSTEM_UPDATE_BOOT_DEVICE
+	string "Boot device"
+	default "/dev/mmcblk0"
+	depends on BR2_PACKAGE_RPI_SYSTEM_UPDATE
+
+	help
+	    The local block device used for the boot and application file-systems.
+config BR2_PACKAGE_RPI_SYSTEM_UPDATE_BOOT_DEVICE
+
+config BR2_PACKAGE_RPI_SYSTEM_UPDATE_MONITOR
+	bool "Update monitor"
+	default N
+	depends on BR2_PACKAGE_RPI_SYSTEM_UPDATE
+
+	help
+	    Installs a systemd timer service that periodically polls the
+	    update server for new software releases. If a new release is detected
+	    it is installed automatically and will be installed when the system
+	    is rebooted.
+
+config BR2_PACKAGE_RPI_SYSTEM_UPDATE_ENCRYPT_APPLICATION_FS
+	bool "Encrypt FS"
+	default N
+	depends on BR2_PACKAGE_RPI_SYSTEM_UPDATE
+	depends on BR2_PACKAGE_CRYPTSETUP
+	help
+	    Use LUKS to encrypt the application file-system. This requires that the
+	    the OTP private key has already been written.
+
+config BR2_PACKAGE_RPI_SYSTEM_UPDATE_DOCKER_APPLICATION
+	bool "Docker setup"
+	default N
+	depends on BR2_PACKAGE_RPI_SYSTEM_UPDATE
+	depends on BR2_PACKAGE_DOCKER_COMPOSE
+
+	help
+	   Installs the docker-compose file and ensures that the application
+	   partition is mounted before docker is started.
+
+config BR2_PACKAGE_RPI_SYSTEM_UPDATE_DOCKER_SERVICE_NAME
+	string "Service name"
+	default ""
+	depends on BR2_PACKAGE_RPI_SYSTEM_UPDATE_DOCKER_APPLICATION
+
+	help
+	   The name of the docker-compose service to start.
+
+config BR2_PACKAGE_RPI_SYSTEM_UPDATE_AUTO_INSTALL
+	bool "Network auto install"
+	default N
+	depends on BR2_PACKAGE_RPI_SYSTEM_UPDATE
+
+	help
+	    Use the rpi-system-update tool to provision (or install) the OS from
+	     scratch.   Typically, this would be used to create an automated
+	     network install image that is launched by the Raspberry Pi EEPROM
+	     bootloader to install a new system e.g. when a custom GPIO reset
+	     button is pressed during boot.
+
+
+config BR2_PACKAGE_RPI_SYSTEM_UPDATE_AUTO_INSTALL_BOOT_PARTITION_MB
+	int "Boot partition size in megabytes"
+	default 512
+	depends on BR2_PACKAGE_RPI_SYSTEM_UPDATE_AUTO_INSTALL
+
+	help
+	    The desired size for the boot partition (FAT32) in megabytes.
+
