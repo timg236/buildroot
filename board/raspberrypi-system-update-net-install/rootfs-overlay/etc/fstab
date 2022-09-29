@@ -1,0 +1,2 @@
+# No need to check initrd
+/dev/root                                       /              auto  rw              0  0

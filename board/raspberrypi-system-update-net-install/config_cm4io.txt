@@ -1,0 +1,9 @@
+[all]
+kernel=zImage
+initramfs rootfs.cpio.zst
+disable_overscan=1
+otg_mode=1
+cmdline=cmdline.txt
+gpu_mem=16
+
+[all]
